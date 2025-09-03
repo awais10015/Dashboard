@@ -9,9 +9,9 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Navbar */}
+      
       <nav className="sticky top-0 z-20 w-full h-14 backdrop-blur-md bg-none border-b border-white/20 flex items-center px-4 justify-between">
-        {/* Sidebar Button */}
+ 
         {!blurActive && <SidebarTrigger className="size-8" />}
 
         <div>{}</div>

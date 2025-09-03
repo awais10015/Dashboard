@@ -32,10 +32,10 @@ import { ChartRadialLabel } from "@/components/charts/RadialChart";
 const Dashboard = () => {
   return (
     <div className="p-6 space-y-6">
-      {/* Header */}
+     
       <h1 className="text-3xl font-bold"> Dashboard</h1>
 
-      {/* Cards */}
+
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         <Card className="rounded-md">
           <CardHeader>
@@ -104,7 +104,7 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      {/* Top grid */}
+  
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6">
           <Card className="rounded-md">
@@ -176,7 +176,7 @@ const Dashboard = () => {
         <ChartPieInteractive />
       </div>
       <ChartAreaInteractive />
-      {/* Bottom grid */}
+     
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6">
         <ChartRadarLinesOnly />
         <ChartBarStacked />

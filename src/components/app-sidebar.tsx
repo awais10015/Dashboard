@@ -39,7 +39,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-screen shadow-md">
-      {/* Logo/Header */}
+    
       <SidebarHeader className="p-6 border-b border-gray-200 dark:border-gray-800">
         <div className="flex gap-4 items-center">
           <Image src={"/logo.svg"} height={40} width={40} alt="logo" />
@@ -49,7 +49,6 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
 
-      {/* Menu */}
       <SidebarContent className="p-4">
         <SidebarMenu className="space-y-2">
           {items.map((item) => {

@@ -16,7 +16,7 @@ export default function Home() {
         <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
 
         <form action="" className="w-full flex flex-col gap-5 mt-5">
-          {/* Email */}
+         
           <div className="relative w-full">
             <Mail
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
@@ -25,7 +25,7 @@ export default function Home() {
             <Input type="email" placeholder="Email" className="pl-10" />
           </div>
 
-          {/* Password */}
+         
 
           <div className="relative w-full">
             <KeyRound
@@ -46,7 +46,7 @@ export default function Home() {
             </button>
           </div>
 
-          {/* checkbox */}
+
           <div className="flex items-center space-x-2">
             <Checkbox id="terms" className="cursor-pointer"/>
             <label
@@ -56,7 +56,7 @@ export default function Home() {
               Remember Me!
             </label>
           </div>
-          {/* Submit Button */}
+         
           <div className="w-full flex flex-wrap items-center gap-2 md:flex-row">
             <Button type="submit" className="w-full cursor-pointer">Get Started</Button>
             
@@ -69,12 +69,3 @@ export default function Home() {
 }
 
 
-
-// const Page = () => {
-  
-//   return (
-    
-//   );
-// };
-
-// export default Page;
