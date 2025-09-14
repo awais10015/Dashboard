@@ -137,7 +137,7 @@ export function ChartAreaInteractive() {
   const [timeRange, setTimeRange] = React.useState("90d");
   const [chartData, setChartData] = React.useState(Data);
 
-  // update values every 5 seconds
+  // update values every 3 seconds
   React.useEffect(() => {
     const interval = setInterval(() => {
       setChartData((prev) =>
@@ -151,13 +151,29 @@ export function ChartAreaInteractive() {
     return () => clearInterval(interval);
   }, []);
 
+  // 🔥 filter by selected range
+  const filteredData = React.useMemo(() => {
+    const referenceDate = new Date("2024-06-30"); // last available date
+    let daysToSubtract = 90;
+    if (timeRange === "30d") daysToSubtract = 30;
+    if (timeRange === "7d") daysToSubtract = 7;
+
+    const startDate = new Date(referenceDate);
+    startDate.setDate(startDate.getDate() - daysToSubtract);
+
+    return chartData.filter((item) => {
+      const date = new Date(item.date);
+      return date >= startDate;
+    });
+  }, [timeRange, chartData]);
+
   return (
     <Card className="pt-0">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
           <CardTitle>Area Chart - Interactive</CardTitle>
           <CardDescription>
-            Updates every 5 seconds with random values
+            Updates every 3 seconds with random values
           </CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
@@ -174,7 +190,7 @@ export function ChartAreaInteractive() {
 
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
-          <AreaChart data={chartData}>
+          <AreaChart data={filteredData}>
             <defs>
               <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.8} />
