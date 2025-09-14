@@ -18,19 +18,9 @@ import { usePathname } from "next/navigation";
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "/",
-    icon: House,
-  },
-  {
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
-  },
-  {
-    title: "Users",
-    url: "/users",
-    icon: UsersRound,
   },
 ];
 

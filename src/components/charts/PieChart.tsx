@@ -28,7 +28,7 @@ import {
 
 export const description = "An interactive pie chart"
 
-const desktopData = [
+const initialData = [
   { month: "january", desktop: 186, fill: "var(--color-january)" },
   { month: "february", desktop: 305, fill: "var(--color-february)" },
   { month: "march", desktop: 237, fill: "var(--color-march)" },
@@ -70,13 +70,29 @@ const chartConfig = {
 
 export function ChartPieInteractive() {
   const id = "pie-interactive"
-  const [activeMonth, setActiveMonth] = React.useState(desktopData[0].month)
+  const [chartData, setChartData] = React.useState(initialData)
+  const [activeMonth, setActiveMonth] = React.useState(initialData[0].month)
 
   const activeIndex = React.useMemo(
-    () => desktopData.findIndex((item) => item.month === activeMonth),
-    [activeMonth]
+    () => chartData.findIndex((item) => item.month === activeMonth),
+    [activeMonth, chartData]
   )
-  const months = React.useMemo(() => desktopData.map((item) => item.month), [])
+
+  const months = React.useMemo(() => chartData.map((item) => item.month), [chartData])
+
+  // Update data randomly every 5 seconds
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setChartData((prevData) =>
+        prevData.map((item) => ({
+          ...item,
+          desktop: Math.floor(Math.random() * 300) + 100, // random between 100–400
+        }))
+      )
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <Card data-chart={id} className="flex flex-col">
@@ -96,11 +112,7 @@ export function ChartPieInteractive() {
           <SelectContent align="end" className="rounded-xl">
             {months.map((key) => {
               const config = chartConfig[key as keyof typeof chartConfig]
-
-              if (!config) {
-                return null
-              }
-
+              if (!config) return null
               return (
                 <SelectItem
                   key={key}
@@ -110,9 +122,7 @@ export function ChartPieInteractive() {
                   <div className="flex items-center gap-2 text-xs">
                     <span
                       className="flex h-3 w-3 shrink-0 rounded-xs"
-                      style={{
-                        backgroundColor: `var(--color-${key})`,
-                      }}
+                      style={{ backgroundColor: `var(--color-${key})` }}
                     />
                     {config?.label}
                   </div>
@@ -134,16 +144,13 @@ export function ChartPieInteractive() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={desktopData}
+              data={chartData}
               dataKey="desktop"
               nameKey="month"
               innerRadius={60}
               strokeWidth={5}
               activeIndex={activeIndex}
-              activeShape={({
-                outerRadius = 0,
-                ...props
-              }: PieSectorDataItem) => (
+              activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
                 <g>
                   <Sector {...props} outerRadius={outerRadius + 10} />
                   <Sector
@@ -169,7 +176,7 @@ export function ChartPieInteractive() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {desktopData[activeIndex].desktop.toLocaleString()}
+                          {chartData[activeIndex].desktop.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}

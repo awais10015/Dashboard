@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import { TrendingUp } from "lucide-react"
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
@@ -20,7 +21,7 @@ import {
 
 export const description = "A multiple line chart"
 
-const chartData = [
+const initialData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
   { month: "March", desktop: 237, mobile: 120 },
@@ -41,6 +42,23 @@ const chartConfig = {
 }
 
 export function ChartLineMultiple() {
+  const [chartData, setChartData] = React.useState(initialData)
+
+  // Update values randomly every 5 seconds
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setChartData((prevData) =>
+        prevData.map((item) => ({
+          ...item,
+          desktop: Math.floor(Math.random() * 300) + 100, // random 100–400
+          mobile: Math.floor(Math.random() * 200) + 50,  // random 50–250
+        }))
+      )
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <Card>
       <CardHeader>
@@ -72,6 +90,7 @@ export function ChartLineMultiple() {
               stroke="var(--color-desktop)"
               strokeWidth={2}
               dot={false}
+              isAnimationActive={true}
             />
             <Line
               dataKey="mobile"
@@ -79,6 +98,7 @@ export function ChartLineMultiple() {
               stroke="var(--color-mobile)"
               strokeWidth={2}
               dot={false}
+              isAnimationActive={true}
             />
           </LineChart>
         </ChartContainer>

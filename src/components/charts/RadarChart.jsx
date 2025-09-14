@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { TrendingUp } from "lucide-react"
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts"
 
@@ -20,7 +21,7 @@ import {
 
 export const description = "A radar chart with lines only"
 
-const chartData = [
+const initialData = [
   { month: "January", desktop: 186, mobile: 160 },
   { month: "February", desktop: 185, mobile: 170 },
   { month: "March", desktop: 207, mobile: 180 },
@@ -38,9 +39,26 @@ const chartConfig = {
     label: "Mobile",
     color: "var(--chart-2)",
   },
-} 
+}
 
 export function ChartRadarLinesOnly() {
+  const [chartData, setChartData] = useState(initialData)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Update values randomly
+      setChartData(prevData =>
+        prevData.map(item => ({
+          ...item,
+          desktop: Math.floor(Math.random() * 250) + 100, // random between 100-350
+          mobile: Math.floor(Math.random() * 250) + 100,
+        }))
+      )
+    }, 3000) // every 5 seconds
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <Card>
       <CardHeader className="items-center pb-4">

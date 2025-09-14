@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 
@@ -12,7 +13,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -22,7 +22,7 @@ import {
 
 export const description = "A stacked bar chart with a legend"
 
-const chartData = [
+const initialData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
   { month: "March", desktop: 237, mobile: 120 },
@@ -43,6 +43,22 @@ const chartConfig = {
 } 
 
 export function ChartBarStacked() {
+  const [chartData, setChartData] = React.useState(initialData)
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setChartData(prev =>
+        prev.map(item => ({
+          ...item,
+          desktop: Math.floor(Math.random() * 400) + 50, // random between 50-450
+          mobile: Math.floor(Math.random() * 300) + 50,  // random between 50-350
+        }))
+      )
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <Card>
       <CardHeader>
@@ -65,13 +81,13 @@ export function ChartBarStacked() {
             <Bar
               dataKey="desktop"
               stackId="a"
-              fill="var(--color-desktop)"
+              fill="var(--chart-1)"
               radius={[0, 0, 4, 4]}
             />
             <Bar
               dataKey="mobile"
               stackId="a"
-              fill="var(--color-mobile)"
+              fill="var(--chart-2)"
               radius={[4, 4, 0, 0]}
             />
           </BarChart>
