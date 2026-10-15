@@ -70,7 +70,7 @@ const chartConfig = {
 
 export function ChartPieInteractive() {
   const id = "pie-interactive"
-  const [chartData, setChartData] = React.useState(initialData)
+  const chartData = initialData
   const [activeMonth, setActiveMonth] = React.useState(initialData[0].month)
 
   const activeIndex = React.useMemo(
@@ -80,27 +80,13 @@ export function ChartPieInteractive() {
 
   const months = React.useMemo(() => chartData.map((item) => item.month), [chartData])
 
-  // Update data randomly every 5 seconds
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setChartData((prevData) =>
-        prevData.map((item) => ({
-          ...item,
-          desktop: Math.floor(Math.random() * 300) + 100, // random between 100–400
-        }))
-      )
-    }, 3000)
-
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <Card data-chart={id} className="flex flex-col">
       <ChartStyle id={id} config={chartConfig} />
       <CardHeader className="flex-row items-start space-y-0 pb-0">
         <div className="grid gap-1">
-          <CardTitle>Pie Chart - Interactive</CardTitle>
-          <CardDescription>January - June 2024</CardDescription>
+          <CardTitle>Status breakdown</CardTitle>
+          <CardDescription>January – May 2024</CardDescription>
         </div>
         <Select value={activeMonth} onValueChange={setActiveMonth}>
           <SelectTrigger
@@ -183,7 +169,7 @@ export function ChartPieInteractive() {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Invoices
                         </tspan>
                       </text>
                     )

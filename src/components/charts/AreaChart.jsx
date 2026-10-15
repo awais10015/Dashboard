@@ -124,34 +124,18 @@ const Data = [
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "Paid",
     color: "var(--chart-1)",
   },
   mobile: {
-    label: "Mobile",
+    label: "Outstanding",
     color: "var(--chart-2)",
   },
 };
 
 export function ChartAreaInteractive() {
   const [timeRange, setTimeRange] = React.useState("90d");
-  const [chartData, setChartData] = React.useState(Data);
 
-  // update values every 3 seconds
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setChartData((prev) =>
-        prev.map((item) => ({
-          ...item,
-          desktop: Math.floor(Math.random() * 500) + 50,
-          mobile: Math.floor(Math.random() * 500) + 50,
-        }))
-      );
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // 🔥 filter by selected range
   const filteredData = React.useMemo(() => {
     const referenceDate = new Date("2024-06-30"); // last available date
     let daysToSubtract = 90;
@@ -161,19 +145,19 @@ export function ChartAreaInteractive() {
     const startDate = new Date(referenceDate);
     startDate.setDate(startDate.getDate() - daysToSubtract);
 
-    return chartData.filter((item) => {
+    return Data.filter((item) => {
       const date = new Date(item.date);
       return date >= startDate;
     });
-  }, [timeRange, chartData]);
+  }, [timeRange]);
 
   return (
     <Card className="pt-0">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
-          <CardTitle>Area Chart - Interactive</CardTitle>
+          <CardTitle>Invoice activity</CardTitle>
           <CardDescription>
-            Updates every 3 seconds with random values
+            Paid vs outstanding amounts over time
           </CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
@@ -189,7 +173,7 @@ export function ChartAreaInteractive() {
       </CardHeader>
 
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
+        <ChartContainer config={chartConfig} className="aspect-auto h-[300px] w-full">
           <AreaChart data={filteredData}>
             <defs>
               <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">

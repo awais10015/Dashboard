@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React from "react"
 import { TrendingUp } from "lucide-react"
 import { LabelList, RadialBar, RadialBarChart } from "recharts"
 
@@ -28,34 +28,20 @@ const chartConfig = {
   other: { label: "Other", color: "var(--chart-5)" },
 }
 
+const initialRadialData = [
+  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
+  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+  { browser: "other", visitors: 90, fill: "var(--color-other)" },
+]
+
 export function ChartRadialLabel() {
-  const [chartData, setChartData] = useState([
-    { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-    { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-    { browser: "other", visitors: 90, fill: "var(--color-other)" },
-  ])
-
-  // Update chart data every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setChartData((prev) =>
-        prev.map((item) => ({
-          ...item,
-          visitors: Math.floor(Math.random() * 300) + 50, // random 50–350
-        }))
-      )
-    }, 3000)
-
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Radial Chart - Real Time</CardTitle>
-        <CardDescription>Auto updating every 5s</CardDescription>
+        <CardTitle>Source distribution</CardTitle>
+        <CardDescription>Share by payment channel</CardDescription>
       </CardHeader>
 
       <CardContent className="flex-1 pb-0">
@@ -64,7 +50,7 @@ export function ChartRadialLabel() {
           className="mx-auto aspect-square max-h-[250px]"
         >
           <RadialBarChart
-            data={chartData}
+            data={initialRadialData}
             startAngle={-90}
             endAngle={380}
             innerRadius={30}
@@ -88,10 +74,10 @@ export function ChartRadialLabel() {
 
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Card payments lead at 32% <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Showing total visitors (updates every 5s)
+          Sample data for layout preview
         </div>
       </CardFooter>
     </Card>

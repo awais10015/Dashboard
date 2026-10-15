@@ -43,31 +43,15 @@ const chartConfig = {
 } 
 
 export function ChartBarStacked() {
-  const [chartData, setChartData] = React.useState(initialData)
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setChartData(prev =>
-        prev.map(item => ({
-          ...item,
-          desktop: Math.floor(Math.random() * 400) + 50, // random between 50-450
-          mobile: Math.floor(Math.random() * 300) + 50,  // random between 50-350
-        }))
-      )
-    }, 3000)
-
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bar Chart - Stacked + Legend</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Monthly volume</CardTitle>
+        <CardDescription>Stacked view by channel, Jan – Jun 2024</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart accessibilityLayer data={initialData}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -95,10 +79,10 @@ export function ChartBarStacked() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Volume up 4.1% vs prior month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
+          Sample data for layout preview
         </div>
       </CardFooter>
     </Card>

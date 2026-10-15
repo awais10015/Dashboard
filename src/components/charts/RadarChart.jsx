@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import React from "react"
 import { TrendingUp } from "lucide-react"
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts"
 
@@ -42,29 +42,12 @@ const chartConfig = {
 }
 
 export function ChartRadarLinesOnly() {
-  const [chartData, setChartData] = useState(initialData)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Update values randomly
-      setChartData(prevData =>
-        prevData.map(item => ({
-          ...item,
-          desktop: Math.floor(Math.random() * 250) + 100, // random between 100-350
-          mobile: Math.floor(Math.random() * 250) + 100,
-        }))
-      )
-    }, 3000) // every 5 seconds
-
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <Card>
       <CardHeader className="items-center pb-4">
-        <CardTitle>Radar Chart - Lines Only</CardTitle>
+        <CardTitle>Category balance</CardTitle>
         <CardDescription>
-          Showing total visitors for the last 6 months
+          Relative mix across six months
         </CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
@@ -72,7 +55,7 @@ export function ChartRadarLinesOnly() {
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >
-          <RadarChart data={chartData}>
+          <RadarChart data={initialData}>
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
@@ -98,10 +81,11 @@ export function ChartRadarLinesOnly() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Mix shifted slightly toward mobile{" "}
+          <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground flex items-center gap-2 leading-none">
-          January - June 2024
+          January – June 2024
         </div>
       </CardFooter>
     </Card>

@@ -1,10 +1,20 @@
-"use client"
+"use client";
 
-import { UsersRound, House, LayoutDashboard } from "lucide-react";
+import {
+  CircleHelp,
+  LayoutDashboard,
+  ReceiptText,
+  Settings,
+  UsersRound,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -13,56 +23,116 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
-// Menu items.
 const items = [
   {
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
+    exact: true,
+  },
+  {
+    title: "Invoices",
+    url: "/invoices",
+    icon: ReceiptText,
+    exact: false,
+  },
+  {
+    title: "Customers",
+    url: "/customers",
+    icon: UsersRound,
+    exact: false,
+  },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings,
+    exact: false,
   },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ className }: { className?: string }) {
   const pathname = usePathname();
 
   return (
-    <Sidebar className="bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-screen shadow-md">
-    
-      <SidebarHeader className="p-6 border-b border-gray-200 dark:border-gray-800">
-        <div className="flex gap-4 items-center">
-          <Image src={"/logo.svg"} height={40} width={40} alt="logo" />
-          <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-            Dashboard
-          </h1>
-        </div>
+    <Sidebar
+      collapsible="icon"
+      className={cn("border-sidebar-border", className)}
+    >
+      <SidebarHeader className="flex h-14 shrink-0 flex-row items-center border-b border-sidebar-border px-3">
+        <Link
+          href="/dashboard"
+          className="flex min-w-0 items-center gap-3 overflow-hidden"
+        >
+          <Image
+            src="/logo.svg"
+            height={32}
+            width={32}
+            alt="Logo"
+            className="shrink-0"
+          />
+          <span className="truncate text-base font-semibold tracking-tight group-data-[collapsible=icon]:hidden">
+            Invoice Desk
+          </span>
+        </Link>
       </SidebarHeader>
 
-      <SidebarContent className="p-4">
-        <SidebarMenu className="space-y-2">
-          {items.map((item) => {
-            const isActive = pathname === item.url;
-            return (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a
-                    href={item.url}
-                    className={`flex items-center gap-3 rounded-xl px-4 py-2 text-sm font-medium transition-all ${
-                      isActive
-                        ? "bg-blue-600 text-white shadow-md"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                    }`}
-                  >
-                    <item.icon className="h-5 w-5" />
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            );
-          })}
-        </SidebarMenu>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Main</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map((item) => {
+                const isActive = item.exact
+                  ? pathname === item.url
+                  : pathname.startsWith(item.url);
+
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      tooltip={item.title}
+                      className={cn(
+                        "h-9 rounded-lg",
+                        isActive &&
+                          "border-l-2 border-primary bg-primary/10 font-medium text-primary hover:bg-primary/15 hover:text-primary data-[active=true]:bg-primary/10 data-[active=true]:text-primary"
+                      )}
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter className="border-t border-sidebar-border p-2">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              tooltip="Help & documentation"
+              className="h-9 rounded-lg text-muted-foreground"
+            >
+              <a
+                href="https://nextjs.org/docs"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <CircleHelp />
+                <span>Help</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

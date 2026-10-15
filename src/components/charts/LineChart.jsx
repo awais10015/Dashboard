@@ -42,34 +42,17 @@ const chartConfig = {
 }
 
 export function ChartLineMultiple() {
-  const [chartData, setChartData] = React.useState(initialData)
-
-  // Update values randomly every 5 seconds
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setChartData((prevData) =>
-        prevData.map((item) => ({
-          ...item,
-          desktop: Math.floor(Math.random() * 300) + 100, // random 100–400
-          mobile: Math.floor(Math.random() * 200) + 50,  // random 50–250
-        }))
-      )
-    }, 3000)
-
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Line Chart - Multiple</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Payment trends</CardTitle>
+        <CardDescription>Dual series comparison, Jan – Jun 2024</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <LineChart
             accessibilityLayer
-            data={chartData}
+            data={initialData}
             margin={{
               left: 12,
               right: 12,
@@ -107,10 +90,11 @@ export function ChartLineMultiple() {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none font-medium">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+              Collections steady week over week{" "}
+              <TrendingUp className="h-4 w-4" />
             </div>
             <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              Showing total visitors for the last 6 months
+              Sample data for layout preview
             </div>
           </div>
         </div>
